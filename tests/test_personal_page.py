@@ -33,7 +33,7 @@ class TestPersonalPage:
         login_page.set_password(self.payload['password'])
         login_page.click_to_button_enter()
         main_page.click_to_button_personal_page()
-        assert EXPECTED_PROFILE_CLASS_TEXT in profile_page.get_element_attribute_class()
+        assert EXPECTED_PROFILE_CLASS in profile_page.get_element_attribute_class()
 
     @allure.title('Проверка перехода в раздел "История заказов"')
     @allure.description('Выполняется авторизация, переход в раздел "История заказов" и проверяется активация страницы.')
@@ -48,7 +48,7 @@ class TestPersonalPage:
         login_page.click_to_button_enter()
         main_page.click_to_button_personal_page()
         profile_page.click_to_button_order_history()
-        assert EXPECTED_HISTORY_CLASS_TEXT in order_history_page.get_element_attribute_class()
+        assert EXPECTED_HISTORY_CLASS in order_history_page.get_element_attribute_class()
 
     @allure.title('Проверка выхода из личного кабинета')
     @allure.description(

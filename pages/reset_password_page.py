@@ -2,6 +2,7 @@ import allure
 from pages.base_page import BasePage
 from locators.reset_password_page_locators import ResetPasswordPageLocators
 
+
 class ResetPasswordPage(BasePage):
 
     @allure.step('Открытие страницы {url}')
@@ -16,6 +17,6 @@ class ResetPasswordPage(BasePage):
     def click_to_button_show_hide_password(self):
         self.click_to_element(ResetPasswordPageLocators.SHOW_HIDE_BUTTON)
 
-    @allure.step('Получение атрибута "class" у элемента')
-    def get_element_attribute_class(self):
+    @allure.step('Получение атрибута "class" у поля ввода пароля')
+    def get_class_password_input(self):
         return self.get_element_attribute(ResetPasswordPageLocators.PASSWORD_INPUT_FIELD, 'class')

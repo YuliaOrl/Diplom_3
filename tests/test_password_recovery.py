@@ -40,7 +40,7 @@ class TestPasswordRecovery:
         assert reset_password_page.get_title_page() == EXPECTED_RECOVERY_PASSWORD_TITLE
 
     @allure.title('Проверка клика по кнопке "Показать/скрыть пароль"')
-    @allure.description('Выполняется проверка активации и подсвечивания поля при нажатии на кнопку.')
+    @allure.description('Выполняется проверка активации и подсвечивания поля ввода пароля при нажатии на кнопку.')
     def test_activation_field_email_after_click(self, driver):
         reset_password_page = ResetPasswordPage(driver)
         forgot_password_page = ForgotPasswordPage(driver)
@@ -48,7 +48,7 @@ class TestPasswordRecovery:
         forgot_password_page.set_email(self.payload['email'])
         forgot_password_page.click_to_button_recovery()
         reset_password_page.click_to_button_show_hide_password()
-        assert EXPECTED_CLASS_TEXT in reset_password_page.get_element_attribute_class()
+        assert EXPECTED_INPUT_CLASS in reset_password_page.get_class_password_input()
 
     @classmethod
     def teardown_class(cls):

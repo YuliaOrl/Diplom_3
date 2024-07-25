@@ -7,7 +7,8 @@ class OrdersFeedPageLocators:
     # Название первого бургера в ленте
     BURGER_NAME = By.XPATH, './/h2[@class="text text_type_main-medium mb-2"]'
     # Номер первого заказа в ленте заказов
-    ORDER_NUMBER_IN_FEED = By.XPATH, './/div[@class="OrderHistory_textBox__3lgbs mb-6"]/p[@class="text text_type_digits-default"]'
+    ORDER_NUMBER_IN_FEED = By.XPATH, './/div[@class="OrderHistory_textBox__3lgbs mb-6"]/' \
+                                     'p[@class="text text_type_digits-default"]'
     # Окно деталей заказа
     ORDER_DETAILS_WINDOW = By.XPATH, './/p[text()="Cостав"]/parent::div/parent::div/parent::section'
     # Общий локатор счётчика в ленте заказов

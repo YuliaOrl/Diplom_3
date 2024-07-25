@@ -13,19 +13,23 @@ class BasePage:
         self.driver.get(url)
 
     def find_element_with_wait_visibility(self, locator):
-        WebDriverWait(self.driver, 12).until(expected_conditions.visibility_of_element_located(locator))
+        WebDriverWait(self.driver, 10).until(expected_conditions.visibility_of_element_located(locator))
         return self.driver.find_element(*locator)
 
     def find_element_with_wait_presence(self, locator):
-        WebDriverWait(self.driver, 12).until(expected_conditions.presence_of_element_located(locator))
+        WebDriverWait(self.driver, 10).until(expected_conditions.presence_of_element_located(locator))
         return self.driver.find_element(*locator)
 
     def find_element_with_wait_text_presence(self, locator, text):
-        WebDriverWait(self.driver, 6).until(expected_conditions.text_to_be_present_in_element(locator, text))
+        WebDriverWait(self.driver, 10).until(expected_conditions.text_to_be_present_in_element(locator, text))
+        return self.driver.find_element(*locator)
+
+    def find_element_with_wait_to_be_clickable(self, locator):
+        WebDriverWait(self.driver, 10).until(expected_conditions.element_to_be_clickable(locator))
         return self.driver.find_element(*locator)
 
     def click_to_element(self, locator):
-        self.find_element_with_wait_visibility(locator).click()
+        self.find_element_with_wait_to_be_clickable(locator).click()
 
     def click_to_element_with_presence(self, locator):
         self.find_element_with_wait_presence(locator).click()
@@ -50,6 +54,9 @@ class BasePage:
 
     def drag_and_drop_ingredient(self, element, target):
         ActionChains(self.driver).drag_and_drop(element, target).perform()
+
+    def authorization(self, argument):
+        self.driver.execute_script("window.localStorage.setItem('accessToken', arguments[0]);", argument)
 
     @staticmethod
     def format_locator(locator_value, data):

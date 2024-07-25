@@ -1,3 +1,4 @@
+import time
 import pytest
 import allure
 from data import *
@@ -44,7 +45,7 @@ class TestMainFunctional:
         main_page = MainPage(driver)
         main_page.open_url(MAIN_URL)
         main_page.click_to_ingredient_with_presence(ingredient)
-        assert EXPECTED_OPEN_WINDOW_CLASS_TEXT in main_page.get_class_details_window(ingredient)
+        assert EXPECTED_OPEN_WINDOW_CLASS in main_page.get_class_details_window(ingredient)
 
     @allure.title('Проверка закрытия всплывающего окна с деталями ингредиента')
     @allure.description('Выполняется клик на кнопку-крестик и проверяется закрытие окна с деталями.')
@@ -54,7 +55,7 @@ class TestMainFunctional:
         main_page.open_url(MAIN_URL)
         main_page.click_to_ingredient_with_presence(ingredient)
         main_page.click_to_button_window_close()
-        assert EXPECTED_OPEN_WINDOW_CLASS_TEXT not in main_page.get_class_details_window_with_presence(ingredient)
+        assert EXPECTED_OPEN_WINDOW_CLASS not in main_page.get_class_details_window_with_presence(ingredient)
 
     @allure.title('Проверка каунтера ингредиента при добавлении его в заказ')
     @allure.description('Выполняется добавление ингредиента и проверяется увеличение его каунтера.')
@@ -64,9 +65,7 @@ class TestMainFunctional:
         bun_counter = int(main_page.get_counter_value(INGREDIENTS[0]))
         sauce_counter = int(main_page.get_counter_value(INGREDIENTS[1]))
         filling_counter = int(main_page.get_counter_value(INGREDIENTS[2]))
-        main_page.add_ingredient(INGREDIENTS[0])
-        main_page.add_ingredient(INGREDIENTS[1])
-        main_page.add_ingredient(INGREDIENTS[2])
+        main_page.add_ingredients()
         assert int(main_page.get_counter_value(INGREDIENTS[0])) == 2 * (bun_counter + 1) \
                and int(main_page.get_counter_value(INGREDIENTS[1])) == sauce_counter + 1 \
                and int(main_page.get_counter_value(INGREDIENTS[2])) == filling_counter + 1
@@ -76,17 +75,11 @@ class TestMainFunctional:
     def test_create_order(self, driver):
         main_page = MainPage(driver)
         main_page.open_url(MAIN_URL)
-        driver.execute_script("window.localStorage.setItem('accessToken', arguments[0]);", self.user_token)
+        main_page.set_authorization(self.user_token)
         main_page.click_to_button_enter_account()
-        main_page.click_to_button_constructor()
-        main_page.add_ingredient(INGREDIENTS[0])
-        main_page.add_ingredient(INGREDIENTS[1])
-        main_page.add_ingredient(INGREDIENTS[2])
-        main_page.click_to_button_create_order()
-        assert EXPECTED_OPEN_WINDOW_CLASS_TEXT in main_page.get_class_order_confirm_window()
-
+        main_page.set_order()
+        assert EXPECTED_OPEN_WINDOW_CLASS in main_page.get_class_order_confirm_window()
 
     @classmethod
     def teardown_class(cls):
         requests.delete(API_USER_URL, headers={'Authorization': cls.user_token})
-

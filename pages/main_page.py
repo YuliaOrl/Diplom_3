@@ -1,4 +1,5 @@
 import allure
+from data import *
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
 
@@ -38,10 +39,6 @@ class MainPage(BasePage):
     def click_to_button_window_close(self):
         self.click_to_element(MainPageLocators.WINDOW_CLOSE_BUTTON)
 
-    @allure.step('Клик на кнопку "Оформить заказ"')
-    def click_to_button_create_order(self):
-        self.click_to_element(MainPageLocators.CREATE_ORDER_BUTTON)
-
     @allure.step('Получение атрибута "class" у окна с деталями ингредиента {ingredient}')
     def get_class_details_window(self, ingredient):
         ingredient_window_locator = self.format_locator(MainPageLocators.BASE_INGREDIENT_WINDOW, ingredient)
@@ -63,15 +60,26 @@ class MainPage(BasePage):
         target = self.find_element_with_wait_visibility(MainPageLocators.BASKET_CONSTRUCTOR)
         self.drag_and_drop_ingredient(element, target)
 
+    @allure.step('Добавление ингредиентов в заказ')
+    def add_ingredients(self):
+        for ingredient in INGREDIENTS:
+            self.add_ingredient(ingredient)
+
+    @allure.step('Создание заказа')
+    def set_order(self):
+        self.click_to_button_constructor()
+        self.add_ingredients()
+        self.click_to_element(MainPageLocators.CREATE_ORDER_BUTTON)
+
     @allure.step('Получение значения каунтера ингредиента {ingredient}')
     def get_counter_value(self, ingredient):
         counter_locator = self.format_locator(MainPageLocators.BASE_COUNTER_INGREDIENT, ingredient)
         return self.get_text_from_element(counter_locator)
 
-    # @allure.step('Получение номера нового заказа в окне подтверждения')
-    # def get_order_number(self):
-    #     return self.get_text_from_element(MainPageLocators.ORDER_NUMBER_IN_CONFIRM)
-
     @allure.step('Получение номера нового заказа в окне подтверждения')
     def get_order_number(self):
-        return self.get_text_from_element_with_text_presence(MainPageLocators.ORDER_NUMBER_IN_CONFIRM, '0')
+        return self.get_text_from_element_with_text_presence(MainPageLocators.ORDER_NUMBER_IN_CONFIRM, '1')
+
+    @allure.step('Авторизация в браузере')
+    def set_authorization(self, argument):
+        self.authorization(argument)
